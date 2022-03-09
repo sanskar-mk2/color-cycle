@@ -1,0 +1,23 @@
+:root {
+    --c1: #000000;
+    --c2: #ffffff;
+    --anim: none;
+}
+
+#col-div {
+    height: 128px;
+    width: 128px;
+    border: 1px solid black;
+    background-color: #00000000;
+    animation: var(--anim) 0.25s infinite linear;
+}
+
+@keyframes color_change {
+    from {
+        background-color: var(--c1);
+    }
+
+    to {
+        background-color: var(--c2);
+    }
+}

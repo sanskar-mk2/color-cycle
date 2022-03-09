@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Cycle</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body onload="start()">
+    <div id="main-div">
+        <div id="inp-div">
+            R<input type="text" id="r" onchange="rgb()" value="00">
+            G<input type="text" id="g" onchange="rgb()" value="00">
+            B<input type="text" id="b" onchange="rgb()" value="00">
+            <br>
+            IR<input type="text" id="ir" onchange="irgb()" value="00">
+            IG<input type="text" id="ig" onchange="irgb()" value="00">
+            IB<input type="text" id="ib" onchange="irgb()" value="00">
+        </div>
+        <div id="col-div"></div>
+        <input type="button" id="ps" value="play" onclick="ps(this)">
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
