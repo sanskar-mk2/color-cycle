@@ -22,6 +22,7 @@ const ps = (btn) => {
         btn.value = "play";
         let root = document.querySelector(":root");
         root.style.setProperty("--anim", "none");
+        let ips = document.getElementsByTagName("input");
         for (let i = 0; i < ips.length; i++) {
             if (ips[i].getAttribute("type") == "text") {
                 ips[i].disabled = false;
