@@ -1,59 +1,102 @@
-const rgbarr = ["00", "00", "00"];
-const irgbarr = ["00", "00", "00"];
+class ColorCycler {
+    constructor() {
+        this.baseColor = [0, 0, 0];
+        this.increment = [0, 0, 0];
+        this.isPlaying = false;
+        this.initializeElements();
+        this.setupEventListeners();
+        this.startUpdateLoop();
+    }
 
-const rgb = () => {
-    rgbarr[0] = document.getElementById("r").value;
-    rgbarr[1] = document.getElementById("g").value;
-    rgbarr[2] = document.getElementById("b").value;
-}
+    initializeElements() {
+        this.colorPreview = document.getElementById("colorPreview");
+        this.toggleButton = document.getElementById("toggleButton");
+        this.inputs = {
+            base: ["r", "g", "b"].map((id) => document.getElementById(id)),
+            increment: ["ir", "ig", "ib"].map((id) =>
+                document.getElementById(id)
+            ),
+        };
+    }
 
-const ps = (btn) => {
-    if (btn.value == "play") {
-        btn.value = "stop";
-        let root = document.querySelector(":root");
-        root.style.setProperty("--anim", "color_change");
-        let ips = document.getElementsByTagName("input")
-        for (let i = 0; i < ips.length; i++) {
-            if (ips[i].getAttribute("type") == "text") {
-                ips[i].disabled = true;
+    setupEventListeners() {
+        this.inputs.base.forEach((input, index) => {
+            input.addEventListener("change", () => this.updateBaseColor(index));
+        });
+
+        this.inputs.increment.forEach((input, index) => {
+            input.addEventListener("change", () => this.updateIncrement(index));
+        });
+
+        this.toggleButton.addEventListener("click", () =>
+            this.toggleAnimation()
+        );
+    }
+
+    updateBaseColor(index) {
+        const value = this.validateColorValue(this.inputs.base[index].value);
+        this.baseColor[index] = value;
+        this.inputs.base[index].value = value;
+        this.updateCSS();
+    }
+
+    updateIncrement(index) {
+        const value = this.validateColorValue(
+            this.inputs.increment[index].value
+        );
+        this.increment[index] = value;
+        this.inputs.increment[index].value = value;
+    }
+
+    validateColorValue(value) {
+        return Math.max(0, Math.min(255, parseInt(value) || 0));
+    }
+
+    toggleAnimation() {
+        this.isPlaying = !this.isPlaying;
+        this.toggleButton.textContent = this.isPlaying ? "Stop" : "Play";
+
+        const root = document.documentElement;
+        root.style.setProperty(
+            "--animation-state",
+            this.isPlaying ? "running" : "paused"
+        );
+
+        this.inputs.base
+            .concat(this.inputs.increment)
+            .forEach((input) => (input.disabled = this.isPlaying));
+    }
+
+    updateCSS() {
+        const root = document.documentElement;
+        const startColor = this.rgbToHex(this.baseColor);
+        const endColor = this.rgbToHex(
+            this.baseColor.map((base, i) => (base + this.increment[i]) % 256)
+        );
+
+        root.style.setProperty("--color-start", startColor);
+        root.style.setProperty("--color-end", endColor);
+    }
+
+    rgbToHex(rgb) {
+        return "#" + rgb.map((n) => n.toString(16).padStart(2, "0")).join("");
+    }
+
+    startUpdateLoop() {
+        setInterval(() => {
+            if (this.isPlaying) {
+                this.baseColor = this.baseColor.map(
+                    (value, index) => (value + this.increment[index]) % 256
+                );
+
+                this.inputs.base.forEach(
+                    (input, index) => (input.value = this.baseColor[index])
+                );
+
+                this.updateCSS();
             }
-        }
-    } else if (btn.value == "stop") {
-        btn.value = "play";
-        let root = document.querySelector(":root");
-        root.style.setProperty("--anim", "none");
-        let ips = document.getElementsByTagName("input");
-        for (let i = 0; i < ips.length; i++) {
-            if (ips[i].getAttribute("type") == "text") {
-                ips[i].disabled = false;
-            }
-        }
+        }, 250);
     }
 }
 
-const start = () => {
-    setInterval(updatecss, 250);
-}
-
-const updatecss = () => {
-    let root = document.querySelector(":root");
-    if (getComputedStyle(root).getPropertyValue("--anim") == "color_change") {
-        root.style.setProperty("--c1", `#${rgbarr.join("")}`);
-        let tmp0 = (parseInt(rgbarr[0], 16) + parseInt(irgbarr[0], 16)) % 255;
-        let tmp1 = (parseInt(rgbarr[1], 16) + parseInt(irgbarr[1], 16)) % 255;
-        let tmp2 = (parseInt(rgbarr[2], 16) + parseInt(irgbarr[2], 16)) % 255;
-        root.style.setProperty("--c2", `#${tmp0.toString(16).padStart(2, "0")}${tmp1.toString(16).padStart(2, "0")}${tmp2.toString(16).padStart(2, "0")}`);
-        rgbarr[0] = tmp0.toString(16).padStart(2, "0");
-        rgbarr[1] = tmp1.toString(16).padStart(2, "0");
-        rgbarr[2] = tmp2.toString(16).padStart(2, "0");
-        document.getElementById("r").value = rgbarr[0];
-        document.getElementById("g").value = rgbarr[1];
-        document.getElementById("b").value = rgbarr[2];
-    }
-}
-
-const irgb = () => {
-    irgbarr[0] = document.getElementById("ir").value;
-    irgbarr[1] = document.getElementById("ig").value;
-    irgbarr[2] = document.getElementById("ib").value;
-}
+document.addEventListener("DOMContentLoaded", () => new ColorCycler());

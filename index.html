@@ -1,29 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Color Cycle</title>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Cycle</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
+    <body>
+        <div class="container">
+            <form class="color-inputs" onsubmit="return false">
+                <div class="input-group">
+                    <div>
+                        <label for="r">Base Red</label>
+                        <input
+                            type="number"
+                            id="r"
+                            min="0"
+                            max="255"
+                            value="0"
+                        />
+                    </div>
+                    <div>
+                        <label for="g">Base Green</label>
+                        <input
+                            type="number"
+                            id="g"
+                            min="0"
+                            max="255"
+                            value="0"
+                        />
+                    </div>
+                    <div>
+                        <label for="b">Base Blue</label>
+                        <input
+                            type="number"
+                            id="b"
+                            min="0"
+                            max="255"
+                            value="0"
+                        />
+                    </div>
+                </div>
 
-<body onload="start()">
-    <div id="main-div">
-        <div id="inp-div">
-            R<input type="text" id="r" onchange="rgb()" value="00">
-            G<input type="text" id="g" onchange="rgb()" value="00">
-            B<input type="text" id="b" onchange="rgb()" value="00">
-            <br>
-            IR<input type="text" id="ir" onchange="irgb()" value="00">
-            IG<input type="text" id="ig" onchange="irgb()" value="00">
-            IB<input type="text" id="ib" onchange="irgb()" value="00">
+                <div class="input-group">
+                    <div>
+                        <label for="ir">Inc Red</label>
+                        <input
+                            type="number"
+                            id="ir"
+                            min="0"
+                            max="255"
+                            value="0"
+                        />
+                    </div>
+                    <div>
+                        <label for="ig">Inc Green</label>
+                        <input
+                            type="number"
+                            id="ig"
+                            min="0"
+                            max="255"
+                            value="0"
+                        />
+                    </div>
+                    <div>
+                        <label for="ib">Inc Blue</label>
+                        <input
+                            type="number"
+                            id="ib"
+                            min="0"
+                            max="255"
+                            value="0"
+                        />
+                    </div>
+                </div>
+            </form>
+
+            <div class="color-preview" id="colorPreview"></div>
+            <button id="toggleButton" class="control-button">Play</button>
         </div>
-        <div id="col-div"></div>
-        <input type="button" id="ps" value="play" onclick="ps(this)">
-    </div>
-    <script src="script.js"></script>
-</body>
-
+        <script src="script.js"></script>
+    </body>
 </html>
